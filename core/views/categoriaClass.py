@@ -1,9 +1,9 @@
-from django.http import HttpResponse, JsonResponse
-from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.views import View
+from django.http import HttpResponse, JsonResponse
+
 from core.models import Categoria
-from core.models import Editora
 
 import json
 
@@ -42,13 +42,3 @@ class CategoriaView(View):
         qs.delete()
         data = {'mensagem': "Keep calm and rock n roll!!"}
         return JsonResponse(data)
-
-
-
-
-
-class EditoraView(View):
-    def get(self, request):
-        data = list(Editora.objects.values())
-        formatted_data = json.dumps(data, ensure_ascii=False)
-        return HttpResponse(formatted_data, content_type="application/json")
