@@ -8,8 +8,10 @@ admin.site.register(Livro)
 admin.site.register(Autor)
 admin.site.register(ItensCompra)
 
+
 class ItensInline(admin.TabularInline):
     model = ItensCompra
+
 
 @admin.register(Compra)
 class CompraAdmin(admin.ModelAdmin):
