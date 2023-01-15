@@ -5,6 +5,8 @@ from core.models import Categoria
 from core.models import Editora
 from core.models import Autor
 from core.models import Livro
+from core.models import Compra
+from core.models import ItensCompra
 
 
 class CategoriaSerializer(ModelSerializer):
@@ -55,4 +57,30 @@ class LivroDetailSerializer(ModelSerializer):
         for autor in autores:
             nomes_autores.append(autor.nome)
         return nomes_autores
+        # mostra o nome e não o id
+
+
+class ItensCompraSerializer(ModelSerializer):
+    total = SerializerMethodField()
     
+    class Meta:
+        model = ItensCompra
+        fields = ("livro", "quantidade", "total")
+        depth = 2
+
+    def get_total(self, instance):
+        return instance.quantidade * instance.livro.preco
+    # valor total da compra
+        
+
+class CompraSerializer(ModelSerializer):
+    usuario = CharField(source="usuario.email")
+    status = SerializerMethodField()
+    itens = ItensCompraSerializer(many=True)
+        
+    class Meta:
+        model = Compra
+        fields = ("id", "status", "usuario", "itens", "total")
+        
+    def get_status(self, instance):
+        return instance.get_status_display()
