@@ -106,7 +106,6 @@ class CriarEditarCompraSerializer(ModelSerializer):
             ItensCompra.objects.create(compra=compra, **item)
         compra.save()
         return compra
-    # não entendi bulhufas dessa aula 34
     
     def update(self, instance, validated_data):
         itens = validated_data.pop("itens")
