@@ -1,12 +1,15 @@
 from rest_framework.serializers import ModelSerializer, CharField
 from rest_framework.serializers import SerializerMethodField
 
-from core.models import Categoria
-from core.models import Editora
-from core.models import Autor
-from core.models import Livro
-from core.models import Compra
-from core.models import ItensCompra
+from rest_framework import serializers
+from core.models import (
+    Categoria,
+    Editora,
+    Autor,
+    Livro,
+    Compra,
+    ItensCompra  
+)
 
 
 class CategoriaSerializer(ModelSerializer):
@@ -91,9 +94,17 @@ class CriarEditarItensCompraSerializer(ModelSerializer):
         model = ItensCompra
         fields = ('livro', 'quantidade')
         
+    def validate(self, data):
+        if data['quantidade'] > data['livro'].quantidade:
+            raise serializers.ValidationError({
+                'Quantidade:' ' Quantidade solicitada não disponível no momento!'
+            })
+        return data
+    
 
 class CriarEditarCompraSerializer(ModelSerializer):
     itens = CriarEditarItensCompraSerializer(many=True)
+    usuario = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Compra
