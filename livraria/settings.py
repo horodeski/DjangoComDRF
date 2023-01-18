@@ -139,3 +139,10 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'API com os endpoints e documentação da minha livraria',
     'VERSION': '1.0.0',
 }
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=180),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1)
+}
+
+CORS_ORIGIN_ALLOW_ALL = True
